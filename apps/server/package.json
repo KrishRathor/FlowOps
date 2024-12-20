@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@types/mssql": "^9.1.5",
+    "aws-sdk": "^2.1692.0",
+    "ioredis": "^5.4.2",
     "mongoose": "^8.9.2",
     "mssql": "^11.0.1",
     "pg": "^8.13.1"
