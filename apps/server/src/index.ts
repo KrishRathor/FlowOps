@@ -1,26 +1,24 @@
-import PostgresClient from "./services/postgres"
+import MongoDBClient from "./services/mongodb";
 
 const main = async () => {
-
-    const pg = new PostgresClient({
-        host: 'localhost',
-        port: 5432,
-        user: 'postgres',
-        password: 'password',
-        database: 'test'
+    const mongoClient = new MongoDBClient({
+      uri: 'mongodb://localhost:27017',
+      dbName: 'test',
     });
-
-    
-    let connect;
+  
     try {
-        connect = await pg.connect();
+      const connection = await mongoClient.connect();
+      console.log(connection.message);
+  
+      // Query example
+      const result = await mongoClient.query('users', { name: 'John Doe' });
+      console.log('Query Result:', result);
+  
+      await mongoClient.close();
     } catch (error) {
-        console.log(error);
-    } finally {   
-        connect?.client?.release();
-        await pg.close()
+      console.error(error);
     }
-
-}
-
-main()
+  };
+  
+  main();
+  

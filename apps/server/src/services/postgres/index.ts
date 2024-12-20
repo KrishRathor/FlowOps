@@ -5,7 +5,11 @@ interface IConfig {
     port: number,
     user: string,
     password: string,
-    database: string
+    database: string,
+    ssl? : boolean | {
+        rejectUnauthorized: boolean,
+        ca: Buffer
+    }
 }
 
 interface IConnectResponse {
@@ -41,6 +45,9 @@ class PostgresClient {
 
     public async query(text: string, params?: any[]): Promise<QueryResult> {
         try {
+            if (!this.pool) {
+                throw new Error("Not connected to the database");
+            }
             return await this.pool.query(text, params);
         } catch (error) {
             console.log(`Error while querying database: ${error}`);
