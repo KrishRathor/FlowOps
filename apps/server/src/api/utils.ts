@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { z } from 'zod';
 
 const JWT_SECRET = 'secret';
 
@@ -43,3 +44,24 @@ export enum StepType {
     AI = "AI"
 }
   
+export enum SQLDatabases {
+    POSTGRES = "POSTGRES",
+    MYSQL = "MYSQL"
+}
+
+export const postgresConfigSchema = z.object({
+    host: z.string(),
+    port: z.number().int().positive(),
+    user: z.string(),
+    password: z.string(),
+    database: z.string(),
+    ssl: z
+      .union([
+        z.boolean(),
+        z.object({
+          rejectUnauthorized: z.boolean(),
+          ca: z.instanceof(Buffer),
+        }),
+      ])
+      .optional(),
+});
