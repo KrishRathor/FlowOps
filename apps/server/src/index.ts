@@ -1,24 +1,11 @@
-import MongoDBClient from "./services/mongodb";
+import express from "express";
+import cors from "cors";
 
-const main = async () => {
-    const mongoClient = new MongoDBClient({
-      uri: 'mongodb://localhost:27017',
-      dbName: 'test',
-    });
-  
-    try {
-      const connection = await mongoClient.connect();
-      console.log(connection.message);
-  
-      // Query example
-      const result = await mongoClient.query('users', { name: 'John Doe' });
-      console.log('Query Result:', result);
-  
-      await mongoClient.close();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
-  main();
-  
+const app = express();
+
+app.use(cors());
+
+app.listen(5000, () => {
+    console.log(`Server listening on port 5000!`)
+})
+
