@@ -49,6 +49,14 @@ export enum SQLDatabases {
     MYSQL = "MYSQL"
 }
 
+export enum Resources {
+    POSTGRES = "POSTGRES",
+    MYSQL = "MYSQL",
+    MONGODB = "MONGODB",
+    REDIS = "REDIS",
+    DYNAMODB = "DYNAMODB"
+}
+
 export const postgresConfigSchema = z.object({
     host: z.string(),
     port: z.number().int().positive(),
@@ -64,4 +72,31 @@ export const postgresConfigSchema = z.object({
         }),
       ])
       .optional(),
+});
+
+export const dynamodbConfigSchema = z.object({
+  region: z.string(),
+  accessKey: z.string(),
+  secretKey: z.string(),
+});
+
+export const mongodbConfigSchema = z.object({
+  uri: z.string(),
+  dbName: z.string(),
+});
+
+export const mysqlConfigSchema = z.object({
+  server: z.string(),
+  port: z.number().positive(),
+  user: z.string(),
+  password: z.string(),
+  database: z.string(),
+});
+
+export const redisConfigSchema = z.object({
+  host: z.string(),
+  port: z.number().positive(),
+  username: z.string().optional(),
+  password: z.string().optional(),
+  db: z.number().optional()
 });
