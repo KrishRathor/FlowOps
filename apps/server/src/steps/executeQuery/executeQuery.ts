@@ -12,8 +12,6 @@ const executeQueryConfigSchema = z.object({
     name: z.string()
 })
 
-
-
 export const executeQuery = async (config: any, userId: string) => {
     try {
         const validatedConfig = executeQueryConfigSchema.parse(config);

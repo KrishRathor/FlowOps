@@ -88,7 +88,6 @@ userRouter.post('/signin', async (req: Request, res: Response) => {
 
 userRouter.post('/signup', async (req: Request, res: Response) => {
     try {
-
         const validatedBody = signUpSchem.parse(req.body);
         const { email, password, name } = validatedBody;
 

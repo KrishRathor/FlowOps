@@ -4,6 +4,7 @@ import { StatusCode } from "../statusCode";
 import { z } from "zod";
 import prisma from "../../db/db";
 import { StepType, verifyToken, type Payload } from "../utils";
+import { executeQuery } from "../../steps/executeQuery/executeQuery";
 
 export const workflowRouter = express.Router();
 
@@ -102,10 +103,10 @@ workflowRouter.post('/create', isAuthenticated, async (req: Request, res: Respon
 })
 
 
-workflowRouter.get('/execute', isAuthenticated, async (req: Request, res: Response) => {
+workflowRouter.post('/execute', isAuthenticated, async (req: Request, res: Response) => {
     try {
 
-        const workflowId = req.query.id;
+        const workflowId = req.body.id;
 
         if (!workflowId || typeof workflowId !== "string") {
             res.status(StatusCode.BAD_REQUEST).json({
@@ -139,44 +140,46 @@ workflowRouter.get('/execute', isAuthenticated, async (req: Request, res: Respon
         })
 
         const results: any[] = []
+        const token = req.header('Authorization')?.replace('Bearer ', '');
+        if (!token || typeof token !== "string") {
+            console.log('first')
+            return;
+        }
+        const details = verifyToken(token) as Payload;
 
-        getAllSteps.map(step => {
-
+        for (const step of getAllSteps) {
             const { type, config, order } = step;
-
             let stepResult;
 
             switch (type) {
                 case 'AI':
-                    break
-
+                    break;
                 case 'BRANCH':
-                    break
-
+                    break;
                 case 'DYNAMODB':
-                    break
-                
+                    break;
                 case 'EXECUTE_QUERY':
-                    break
-
+                    stepResult = await executeQuery(config, details.userId);
+                    break;
                 case "SEND_EMAIL":
-                    break
-
+                    break;
                 case "SLACK_MESSAGE":
-                    break
-
+                    break;
                 case "REDIS":
-                    break
-
+                    break;
                 case "HTTP":
-                    break
-
+                    break;
                 default:
-                    throw new Error(`Unknown error type ${type}`)
+                    throw new Error(`Unknown error type ${type}`);
             }
 
             results.push({ stepId: step.id, result: stepResult });
+        }
 
+        res.status(StatusCode.OK).json({
+            code: StatusCode.OK,
+            message: "Successfully Executed",
+            response: results  
         })
 
     }   catch (error) {
