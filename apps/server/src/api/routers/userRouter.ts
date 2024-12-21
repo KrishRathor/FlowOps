@@ -4,7 +4,7 @@ import { StatusCode } from "../statusCode";
 import prisma from "../../db/db";
 import { comparePassword, generateToken, hashPassword } from "../utils";
 
-const userRouter = express.Router();
+export const userRouter = express.Router();
 
 const signInSchema = z.object({
     email: z.string().email(), 

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = 'secret';
 
-interface Payload {
+export interface Payload {
     userId: string;
     email: string;
     name: string;
@@ -31,3 +31,15 @@ export const verifyToken = (token: string): string | jwt.JwtPayload => {
       throw new Error('Invalid or expired token');
     }
 };
+
+export enum StepType {
+    BRANCH = "BRANCH",
+    EXECUTE_QUERY = "EXECUTE_QUERY",
+    SEND_EMAIL = "SEND_EMAIL",
+    SLACK_MESSAGE = "SLACK_MESSAGE",
+    REDIS = "REDIS",
+    DYNAMODB = "DYNAMODB",
+    HTTP = "HTTP",
+    AI = "AI"
+}
+  

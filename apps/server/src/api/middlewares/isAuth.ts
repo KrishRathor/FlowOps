@@ -1,5 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { verifyToken } from '../utils';
 
 const JWT_SECRET = 'secret';
 
@@ -14,13 +15,13 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
     const token = req.header('Authorization')?.replace('Bearer ', '');
   
     if (!token) {
-      return res.status(401).json({ message: 'No token provided. Unauthorized' });
+      res.status(401).json({ message: 'No token provided. Unauthorized' });
     }
   
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as Payload;
+      token && verifyToken(token);
       next();
     } catch (err) {
-      return res.status(401).json({ message: 'Invalid or expired token. Unauthorized' });
+      res.status(401).json({ message: 'Invalid or expired token. Unauthorized' });
     }
 };
