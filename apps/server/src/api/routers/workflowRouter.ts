@@ -152,22 +152,22 @@ workflowRouter.post('/execute', isAuthenticated, async (req: Request, res: Respo
             let stepResult;
 
             switch (type) {
-                case 'AI':
+                case StepType.AI:
                     break;
-                case 'BRANCH':
+                case StepType.BRANCH:
                     break;
-                case 'DYNAMODB':
+                case StepType.DYNAMODB:
                     break;
-                case 'EXECUTE_QUERY':
+                case StepType.EXECUTE_QUERY:
                     stepResult = await executeQuery(config, details.userId);
                     break;
-                case "SEND_EMAIL":
+                case StepType.SEND_EMAIL:
                     break;
-                case "SLACK_MESSAGE":
+                case StepType.SLACK_MESSAGE:
                     break;
-                case "REDIS":
+                case StepType.REDIS:
                     break;
-                case "HTTP":
+                case StepType.HTTP:
                     break;
                 default:
                     throw new Error(`Unknown error type ${type}`);
